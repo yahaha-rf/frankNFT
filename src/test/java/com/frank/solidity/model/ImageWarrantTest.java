@@ -137,7 +137,7 @@ public class ImageWarrantTest {
     @SneakyThrows
     @Test
     public void updateIsSalability() {
-        TransactionManager transactionManager = new RawTransactionManager(web3j, getCredentials2()) {
+        TransactionManager transactionManager = new RawTransactionManager(web3j, getCredentials()) {
         };
         ImageWarrant imageWarrant = ImageWarrant.load(imageWarrantcontractAddress, web3j, transactionManager, new DefaultGasProvider());
 
@@ -157,12 +157,12 @@ public class ImageWarrantTest {
     @SneakyThrows
     @Test
     public void updatePrice() {
-        TransactionManager transactionManager = new RawTransactionManager(web3j, getCredentials2()) {
+        TransactionManager transactionManager = new RawTransactionManager(web3j, getCredentials()) {
         };
         ImageWarrant imageWarrant = ImageWarrant.load(imageWarrantcontractAddress, web3j, transactionManager, new DefaultGasProvider());
 
         if (imageWarrant.isValid()) {
-            TransactionReceipt send = imageWarrant.modifyPrice(new BigInteger("4")).send();
+            TransactionReceipt send = imageWarrant.modifyPrice(new BigInteger("6")).send();
             log.info(send.toString());
 
             // 上链成功也无法确保会留在主链上，ETH需要等待6个区块确认， 此步骤可放到定时任务去扫描
@@ -282,6 +282,7 @@ public class ImageWarrantTest {
 
             log.info("谁买了:{}",typedResponse.from);
             log.info("谁卖了:{}",typedResponse.to);
+            log.info("交易价格:{}",typedResponse.price);
             log.info("交易哈希:{}",eventValues.getLog().getTransactionHash());
             log.info("------------------------");
         }
